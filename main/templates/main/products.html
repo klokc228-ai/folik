@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+{% block title %}Всі товари | Folik{% endblock %}
+
+{% block content %}
+
+<div style="height: 40px;"></div>
+
+<h2 style="margin-bottom: 32px; text-align: center;">🛍 Всі товари</h2>
+
+<div class="products-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <a href="{% url 'product_detail' product.id %}" class="product-link">
+            <div class="product-image-wrapper">
+                <img 
+                    src="{{ product.image.url }}" 
+                    alt="{{ product.title }}" 
+                    class="product-image"
+                    loading="lazy"
+                >
+                {% if product.discount_price %}
+                    <div class="sale-badge">SALE</div>
+                {% endif %}
+            </div>
+
+            <div class="product-footer">
+                <h3 class="product-title">{{ product.title }}</h3>
+
+                <div class="product-price">
+                    {% if product.discount_price %}
+                        <span class="current-price">{{ product.discount_price|floatformat:0 }} ₴</span>
+                        <span class="old-price">{{ product.price|floatformat:0 }} ₴</span>
+                    {% else %}
+                        <span class="current-price">{{ product.price|floatformat:0 }} ₴</span>
+                    {% endif %}
+                </div>
+
+                <div class="product-more">Детальніше →</div>
+            </div>
+        </a>
+    </div>
+    {% empty %}
+    <p style="grid-column: 1 / -1; text-align: center; color: #888; font-size: 1.2rem; padding: 60px 0;">
+        Наразі товарів немає
+    </p>
+    {% endfor %}
+</div>
+
+{% endblock %}

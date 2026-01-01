@@ -1,0 +1,104 @@
+{% extends 'main/base.html' %}
+{% block title %}Корзина | Folik{% endblock %}
+
+{% block content %}
+<div class="cart-page">
+    <h1>🛒 
+Ваш кошик</h1>
+
+    {% if cart_items %}
+        <div class="cart-items">
+            {% for item in cart_items %}
+            <div class="cart-item">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+                <div class="item-info">
+                    <h2>{{ item.product.title }}</h2>
+                    {% if item.product.discount_price %}
+                        <p class="price">
+                            <span class="old">{{ item.product.price }} ₴</span>
+                            <span class="new">{{ item.product.discount_price }} ₴</span>
+                        </p>
+                    {% else %}
+                        <p class="price">{{ item.product.price }} ₴</p>
+                    {% endif %}
+
+                    <div class="quantity">
+                        <!-- Уменьшить -->
+                        <form method="post" action="{% url 'update_quantity' item.id 'decrease' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="qty-btn">-</button>
+                        </form>
+
+                        <span id="qty-{{ item.id }}">{{ item.quantity }}</span>
+
+                        <!-- Увеличить -->
+                        <form method="post" action="{% url 'update_quantity' item.id 'increase' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="qty-btn">+</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="item-actions">
+                    <p class="total">{{ item.get_total_price }} ₴</p>
+                    <form method="post" action="{% url 'remove_from_cart' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="remove">✖</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="cart-summary">
+            <h2>
+Підсумок: <span id="cartTotal">{{ cart_total }} ₴</span></h2>
+            <a href="{% url 'checkout' %}" class="btn primary">Оформити замовлення</a>
+        </div>
+    {% else %}
+        <p class="empty">Ваша корзина пуста 😔</p>
+        <a href="{% url 'products' %}" class="btn primary">Вернуться к покупкам</a>
+    {% endif %}
+</div>
+
+<style>
+.cart-page { max-width: 900px; margin: 80px auto 40px auto; padding: 0 20px; }
+.cart-page h1 { margin-bottom: 30px; font-size: 32px; color: #e50914; }
+.cart-items { display: flex; flex-direction: column; gap: 20px; }
+
+.cart-item {
+    display: flex; align-items: center; background: #1f1f1f;
+    padding: 15px; border-radius: 12px; gap: 20px;
+}
+.cart-item img { width: 120px; height: 120px; object-fit: cover; border-radius: 10px; }
+
+.item-info { flex: 1; }
+.item-info h2 { margin: 0 0 10px 0; font-size: 18px; }
+.price { margin-bottom: 10px; }
+.price .old { text-decoration: line-through; color: #888; margin-right: 8px; }
+.price .new { color: #46d369; font-weight: bold; }
+
+.quantity { display: flex; align-items: center; gap: 10px; }
+.qty-btn {
+    width: 30px; height: 30px; background: #333; color: white;
+    border: none; border-radius: 6px; cursor: pointer; font-size: 18px;
+}
+
+.item-actions { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.item-actions .total { font-weight: bold; font-size: 18px; color: #46d369; }
+.item-actions .remove { background: #e50914; border: none; color: white; font-size: 18px; cursor: pointer; border-radius: 6px; padding: 5px 10px; transition: 0.2s; }
+.item-actions .remove:hover { background: #b0060f; }
+
+.cart-summary { margin-top: 30px; text-align: right; }
+.cart-summary h2 { font-size: 24px; margin-bottom: 15px; }
+.cart-summary .btn { padding: 15px 40px; font-size: 16px; }
+
+.empty { text-align: center; font-size: 20px; margin-bottom: 20px; opacity: 0.7; }
+
+@media (max-width: 768px) {
+    .cart-item { flex-direction: column; align-items: flex-start; }
+    .item-actions { width: 100%; flex-direction: row; justify-content: space-between; }
+    .item-actions .total { font-size: 16px; }
+}
+</style>
+{% endblock %}

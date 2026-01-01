@@ -1,0 +1,167 @@
+{% extends 'main/base.html' %}
+{% block title %}Оформление заказа | Folik{% endblock %}
+
+{% block content %}
+<div class="checkout-page">
+    <h1>📝 Оформление заказа</h1>
+
+    {% if success %}
+        <div class="success-popup">
+            Спасибо за заказ! С вами скоро свяжется менеджер. ✅
+        </div>
+    {% endif %}
+
+    {% if cart_items %}
+        <form method="post" action="{% url 'place_order' %}">
+            {% csrf_token %}
+            <div class="checkout-items">
+                {% for item in cart_items %}
+                <div class="checkout-item">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+                    <div class="item-info">
+                        <h2>{{ item.product.title }}</h2>
+                        <p>Цена: {{ item.get_total_price }} ₴</p>
+                        <label>
+                            Количество:
+                            <input type="number" name="quantity_{{ item.id }}" value="{{ item.quantity }}" min="1">
+                        </label>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="customer-info">
+                <h2>Ваши данные</h2>
+
+                <label>
+                    ФИО:
+                    <input type="text" name="full_name" required placeholder="Иванов Иван Иванович">
+                    
+                </label>
+
+                <label>
+                    Номер телефона:
+                    <input type="tel" name="phone" required placeholder="+380XXXXXXXXX">
+                    <small>После оформления заказа с вами свяжется наш менеджер</small>
+                </label>
+            </div>
+
+            <button type="submit" class="btn primary">Отправить заказ</button>
+        </form>
+    {% else %}
+        <p class="empty">Ваша корзина пуста 😔</p>
+        <a href="{% url 'products' %}" class="btn primary">Вернуться к покупкам</a>
+    {% endif %}
+</div>
+
+<style>
+.checkout-page {
+    max-width: 900px;
+    margin: 80px auto 40px auto;
+    padding: 0 20px;
+}
+
+.checkout-page h1 {
+    margin-bottom: 30px;
+    font-size: 32px;
+    color: #e50914;
+}
+
+.checkout-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.checkout-item {
+    display: flex;
+    align-items: center;
+    background: #1f1f1f;
+    padding: 15px;
+    border-radius: 12px;
+    gap: 15px;
+}
+
+.checkout-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.item-info h2 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+}
+
+.item-info p {
+    margin: 0 0 5px 0;
+}
+
+.customer-info {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.customer-info label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    color: #eee;
+}
+
+.customer-info input {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background: #1f1f1f;
+    color: #fff;
+    font-size: 16px;
+    margin-top: 5px;
+    transition: 0.3s;
+}
+
+.customer-info input:focus {
+    border-color: #e50914;
+    box-shadow: 0 0 5px rgba(229,9,20,0.6);
+    outline: none;
+}
+
+.customer-info small {
+    margin-top: 5px;
+    color: #aaa;
+    font-size: 13px;
+}
+
+.btn.primary {
+    padding: 15px 40px;
+    font-size: 16px;
+    margin-top: 20px;
+    background-color: #e50914;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn.primary:hover {
+    background-color: #b0060f;
+}
+
+.success-popup {
+    background: #46d369;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn { from {opacity:0;} to{opacity:1;} }
+</style>
+{% endblock %}

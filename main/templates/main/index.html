@@ -1,0 +1,54 @@
+{% extends 'main/base.html' %}
+{% block title %}Folik — інтернет-магазин техніки в Україні{% endblock %}
+
+{% block content %}
+
+<!-- Hero-секция -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Найкраща техніка для життя та роботи</h1>
+        <p>Смартфони, ноутбуки, аксесуари — лише перевірені товари</p>
+        <a href="{% url 'products' %}" class="hero-btn">Переглянути товари</a>
+    </div>
+</div>
+
+<!-- Основний контент -->
+<div class="container">
+    <section class="featured-products">
+        <h2>🔥 Найкращі товари</h2>
+
+        <div class="products-grid">
+            {% for product in featured_products %}
+            <div class="product-card">
+                <a href="{% url 'product_detail' product.id %}" class="product-link">
+                    <div class="product-image-wrapper">
+                        <img 
+                            src="{{ product.image.url }}" 
+                            alt="{{ product.title }}" 
+                            class="product-image"
+                            loading="lazy"
+                        >
+                    </div>
+
+                    <div class="product-info">
+                        <h3 class="product-title">{{ product.title }}</h3>
+
+                        <div class="product-price">
+                            {% if product.discount_price %}
+                                <span class="current-price">{{ product.discount_price|floatformat:0 }} ₴</span>
+                                <span class="old-price">{{ product.price|floatformat:0 }} ₴</span>
+                            {% else %}
+                                <span class="current-price">{{ product.price|floatformat:0 }} ₴</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <p class="no-products">Наразі немає рекомендованих товарів</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+{% endblock %}

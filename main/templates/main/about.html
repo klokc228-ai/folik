@@ -1,0 +1,76 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Про магазин | Folik{% endblock %}
+
+{% block content %}
+<div class="about-page">
+    <h1>Про магазин Folik</h1>
+
+    <p>Folik — це динамічно розвиваючася компанія з продажу техніки в Україні. Ми пропонуємо широкий асортимент сучасних пристроїв та електроніки як у роздріб, так і оптом. Наша мета — зробити покупки зручними, безпечними та швидкими для кожного клієнта.</p>
+
+    <p>Ми активно розвиваємося та вже обслуговували понад 10 000 задоволених клієнтів по всій Україні. Постійно розширюємо асортимент, щоб задовольнити потреби як приватних покупців, так і корпоративних клієнтів.</p>
+
+    <p>У нашому магазині ви можете:</p>
+    <ul>
+        <li>Придбати техніку у роздріб або оптом</li>
+        <li>Використати самовивіз з нашого офісу та складу в Одесі</li>
+        <li>Отримати консультацію від наших менеджерів перед покупкою</li>
+        <li>Замовити доставку по всій Україні</li>
+    </ul>
+
+    <p>Ми цінуємо довіру наших клієнтів і гарантуємо якісне обслуговування на всіх етапах покупки. З нами ви можете бути впевнені, що отримаєте оригінальний продукт, швидкий сервіс та вигідні умови.</p>
+
+    <p>Приєднуйтесь до Folik і переконайтеся, що покупки техніки можуть бути зручними, надійними та приємними!</p>
+</div>
+
+<style>
+.about-page {
+    max-width: 1000px;
+    margin: 80px auto 40px auto;
+    padding: 0 20px;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.about-page h1 {
+    font-size: 36px;
+    margin-bottom: 30px;
+    color: #e50914;
+    text-align: center;
+}
+
+.about-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.about-gallery img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.about-gallery img:hover {
+    transform: scale(1.05);
+}
+
+.about-page p {
+    margin-bottom: 15px;
+}
+
+.about-page ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.about-page ul li {
+    margin-bottom: 10px;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'main/base.html' %}
+{% block title %}FAQ | Folik{% endblock %}
+
+{% block content %}
+<div class="faq-page">
+    <h1>❓ Часто задаваемые вопросы</h1>
+
+    <div class="faq-container">
+
+        <div class="faq-item">
+            <div class="question">💳 Какие способы оплаты доступны?</div>
+            <div class="answer">
+                Мы принимаем оплату картами Visa/Mastercard, а также наличными при самовывозе.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="question">🚚 Доставка по Украине?</div>
+            <div class="answer">
+                Да, мы доставляем заказы по всей Украине. Сроки зависят от региона, обычно 1-5 дней.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="question">🏬 Есть ли самовывоз?</div>
+            <div class="answer">
+                Да, вы можете забрать заказ из нашего офиса и склада в Одессе.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="question">📦 Как вернуть или обменять товар?</div>
+            <div class="answer">
+                Вы можете вернуть или обменять товар в течение 14 дней после покупки при сохранении упаковки и документов.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="question">🔧 Есть ли гарантия на технику?</div>
+            <div class="answer">
+                Все товары имеют официальную гарантию производителя. Подробности можно уточнить у менеджера.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+.faq-page {
+    max-width: 900px;
+    margin: 80px auto 40px auto;
+    padding: 0 20px;
+}
+
+.faq-page h1 {
+    text-align: center;
+    color: #e50914;
+    margin-bottom: 40px;
+}
+
+.faq-item {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    background: #1f1f1f;
+    color: white;
+}
+
+.question {
+    padding: 15px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    position: relative;
+}
+
+.question::after {
+    content: "+";
+    position: absolute;
+    right: 20px;
+    font-size: 20px;
+    transition: transform 0.2s;
+}
+
+.question.active::after {
+    transform: rotate(45deg);
+}
+
+.answer {
+    display: none;
+    padding: 15px 20px;
+    border-top: 1px solid #444;
+    background: #2a2a2a;
+}
+</style>
+
+<script>
+const questions = document.querySelectorAll('.question');
+
+questions.forEach(q => {
+    q.addEventListener('click', () => {
+        q.classList.toggle('active');
+        const answer = q.nextElementSibling;
+        if (answer.style.display === 'block') {
+            answer.style.display = 'none';
+        } else {
+            answer.style.display = 'block';
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,249 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ product.title }} | Folik{% endblock %}
+
+{% block content %}
+<div class="product-page">
+
+    <div class="gallery">
+<div class="main-image-wrapper">
+    <button class="arrow left" onclick="prevImage()">&#10094;</button>
+    <img id="mainImage" src="{{ product.image.url }}" class="main-image">
+    <button class="arrow right" onclick="nextImage()">&#10095;</button>
+
+    {% if product.stock > 0 and product.stock <= 5 %}
+        <div class="low-stock-badge">
+            ⚠️ Почти весь товар купили — осталось {{ product.stock }} шт.
+        </div>
+    {% endif %}
+</div>
+
+        </div>
+
+        <!-- Миниатюры -->
+        <div class="thumbs-wrapper">
+            <div class="thumbs" id="thumbs">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" onclick="changeImage(this.src)">
+                {% endif %}
+                {% for img in product.images.all %}
+                    <img src="{{ img.image.url }}" onclick="changeImage(this.src)">
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="details">
+        <h1>{{ product.title }}</h1>
+
+        {% if product.discount_price %}
+            <div class="price">
+                <span class="old">{{ product.price }} ₴</span>
+                <span class="new">{{ product.discount_price }} ₴</span>
+            </div>
+        {% else %}
+            <div class="price">
+                <span class="new">{{ product.price }} ₴</span>
+            </div>
+        {% endif %}
+
+        <p class="description">{{ product.description }}</p>
+
+        <div class="actions">
+            <form method="post" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <button class="btn primary">🛒 В корзину</button>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- JS -->
+<script>
+const images = [];
+const mainImage = document.getElementById("mainImage");
+const thumbs = document.getElementById("thumbs").getElementsByTagName("img");
+
+// Собираем все ссылки на изображения
+for (let i = 0; i < thumbs.length; i++) {
+    images.push(thumbs[i].src);
+}
+
+let currentIndex = 0;
+
+function changeImage(src) {
+    mainImage.style.opacity = 0;
+    setTimeout(() => {
+        mainImage.src = src;
+        mainImage.style.opacity = 1;
+        currentIndex = images.indexOf(src);
+    }, 150);
+}
+
+function prevImage() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    changeImage(images[currentIndex]);
+}
+
+function nextImage() {
+    currentIndex = (currentIndex + 1) % images.length;
+    changeImage(images[currentIndex]);
+}
+</script>
+
+<style>
+.product-page {
+    display: flex;
+    gap: 40px;
+    margin: 40px;
+}
+
+/* Галерея */
+.gallery {
+    max-width: 500px;
+    position: relative;
+}
+
+.main-image-wrapper {
+    position: relative;
+}
+
+.main-image {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: opacity 0.3s ease;
+}
+
+/* Стрелки */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    font-size: 30px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 10;
+    transition: 0.2s;
+}
+
+.arrow:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+.arrow.left {
+    left: 10px;
+}
+
+.arrow.right {
+    right: 10px;
+}
+
+/* Красная надпись на фото */
+.low-stock-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #e53935;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    z-index: 20;
+    font-size: 14px;
+}
+
+/* Прокручиваемые миниатюры */
+.thumbs-wrapper {
+    margin-top: 10px;
+    overflow-x: auto;
+}
+
+.thumbs {
+    display: flex;
+    gap: 10px;
+}
+
+.thumbs img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: transform 0.2s;
+}
+
+.thumbs img:hover {
+    transform: scale(1.1);
+    border-color: #333;
+}
+
+/* Детали товара */
+.details {
+    max-width: 500px;
+}
+
+.price {
+    margin: 20px 0;
+}
+
+.old {
+    text-decoration: line-through;
+    color: #888;
+    margin-right: 10px;
+}
+
+.new {
+    font-weight: bold;
+    color: #e53935;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+    .product-page {
+        display: block;
+        margin: 20px;
+    }
+
+    .thumbs img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .arrow {
+        font-size: 24px;
+        padding: 8px;
+    }
+
+    .details h1 {
+        font-size: 22px;
+    }
+
+    .price .new {
+        font-size: 24px;
+    }
+
+    .price .old {
+        font-size: 16px;
+    }
+
+    .btn {
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+
+    .low-stock-badge {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
+</style>
+
+{% endblock %}
