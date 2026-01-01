@@ -1,7 +1,10 @@
 from django.contrib import admin
-from .models import Product, ProductImage, Order, OrderItem
+from .models import Product, ProductImage, Order, OrderItem, CartItem
 
 
+# --------------------
+# ПРОДУКТЫ
+# --------------------
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
@@ -9,16 +12,27 @@ class ProductImageInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'price', 'is_available', 'is_featured', 'created_at')
+    list_display = ('title', 'price', 'stock', 'is_available', 'is_featured', 'created_at')
     list_filter = ('is_available', 'is_featured', 'created_at')
     search_fields = ('title',)
     inlines = [ProductImageInline]
 
 
 # --------------------
+# КОРЗИНА (без юзеров)
+# --------------------
+@admin.register(CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'product', 'quantity', 'get_user_display')
+
+    def get_user_display(self, obj):
+        return obj.user if obj.user else "Аноним"
+    get_user_display.short_description = "Пользователь"
+
+
+# --------------------
 # ЗАКАЗЫ
 # --------------------
-
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 0
@@ -36,7 +50,6 @@ class OrderAdmin(admin.ModelAdmin):
         'id',
         'full_name',
         'phone',
-        'user',
         'created_at',
         'is_processed',
         'order_total'
@@ -49,3 +62,12 @@ class OrderAdmin(admin.ModelAdmin):
         return sum(item.get_total_price() for item in obj.items.all())
 
     order_total.short_description = 'Итого'
+
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'order', 'product', 'quantity', 'get_total_price')
+
+    def get_total_price(self, obj):
+        return obj.get_total_price()
+    get_total_price.short_description = 'Сумма'

@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 
 from .models import (
     Product,
@@ -8,7 +7,9 @@ from .models import (
     OrderItem
 )
 
-
+# =====================
+# ГЛАВНАЯ СТРАНИЦА
+# =====================
 def index(request):
     featured_products = Product.objects.filter(
         is_available=True,
@@ -18,28 +19,33 @@ def index(request):
         'featured_products': featured_products
     })
 
-
+# =====================
+# СТРАНИЦА ТОВАРОВ
+# =====================
 def products(request):
     products = Product.objects.filter(is_available=True)
     return render(request, 'main/products.html', {
         'products': products
     })
 
-
+# =====================
+# ДЕТАЛИ ТОВАРА
+# =====================
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, 'main/product_detail.html', {
         'product': product
     })
 
-
 # =====================
 # КОРЗИНА
 # =====================
-
-@login_required
 def cart_view(request):
-    cart_items = CartItem.objects.filter(user=request.user)
+    session_key = request.session.session_key
+    if not session_key:
+        request.session.create()
+
+    cart_items = CartItem.objects.filter(session_key=session_key)
     cart_total = sum(item.get_total_price() for item in cart_items)
 
     return render(request, 'main/cart.html', {
@@ -47,13 +53,14 @@ def cart_view(request):
         'cart_total': cart_total
     })
 
-
-@login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
+    session_key = request.session.session_key
+    if not session_key:
+        request.session.create()
 
     item, created = CartItem.objects.get_or_create(
-        user=request.user,
+        session_key=session_key,
         product=product,
         defaults={'quantity': 1}
     )
@@ -64,46 +71,49 @@ def add_to_cart(request, product_id):
 
     return redirect('cart')
 
-
-@login_required
 def remove_from_cart(request, item_id):
+    session_key = request.session.session_key
+    if not session_key:
+        request.session.create()
+
     item = get_object_or_404(
         CartItem,
         id=item_id,
-        user=request.user
+        session_key=session_key
     )
     item.delete()
     return redirect('cart')
 
-
-@login_required
 def update_quantity(request, item_id, action):
+    session_key = request.session.session_key
+    if not session_key:
+        request.session.create()
+
     item = get_object_or_404(
         CartItem,
         id=item_id,
-        user=request.user
+        session_key=session_key
     )
 
     if action == 'increase':
         item.quantity += 1
         item.save()
-
     elif action == 'decrease' and item.quantity > 1:
         item.quantity -= 1
         item.save()
 
     return redirect('cart')
 
-
 # =====================
 # ОФОРМЛЕНИЕ ЗАКАЗА
 # =====================
-
-@login_required
 def checkout_view(request):
-    cart_items = CartItem.objects.filter(user=request.user)
+    session_key = request.session.session_key
+    if not session_key:
+        request.session.create()
 
-    # ❗ защита от пустой корзины
+    cart_items = CartItem.objects.filter(session_key=session_key)
+
     if not cart_items.exists():
         return redirect('cart')
 
@@ -117,9 +127,8 @@ def checkout_view(request):
                 'error': 'Заполните все поля'
             })
 
-        # 🔥 СОЗДАЁМ ЗАКАЗ
+        # 🔥 СОЗДАЁМ ЗАКАЗ (без пользователя)
         order = Order.objects.create(
-            user=request.user,
             full_name=full_name,
             phone=phone
         )
@@ -132,7 +141,6 @@ def checkout_view(request):
                     item.quantity
                 )
             )
-
             OrderItem.objects.create(
                 order=order,
                 product=item.product,
@@ -142,7 +150,6 @@ def checkout_view(request):
         # ❌ ОЧИЩАЕМ КОРЗИНУ
         cart_items.delete()
 
-        # ✅ СТРАНИЦА УСПЕХА
         return render(request, 'main/checkout.html', {
             'success': True,
             'cart_items': []
@@ -152,14 +159,11 @@ def checkout_view(request):
         'cart_items': cart_items
     })
 
-
 # =====================
 # СТАТИЧЕСКИЕ СТРАНИЦЫ
 # =====================
-
 def about(request):
     return render(request, 'main/about.html')
-
 
 def faq(request):
     return render(request, 'main/faq.html')
