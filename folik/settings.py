@@ -13,7 +13,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ── SECURITY ──
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-replace-me')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = ['folik.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com']
+
 
 
 # ── APPLICATION DEFINITION ──
