@@ -1,6 +1,6 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from .models import Product, ProductImage, Order, OrderItem, CartItem
-
 
 # --------------------
 # ПРОДУКТЫ
@@ -12,9 +12,8 @@ class ProductImageInline(admin.TabularInline):
 
     def image_preview(self, obj):
         if obj.image:
-            return f'<img src="{obj.image.url}" width="100" />'
+            return format_html('<img src="{}" width="100" />', obj.image.url)
         return "-"
-    image_preview.allow_tags = True
     image_preview.short_description = "Превью"
 
 
@@ -27,21 +26,20 @@ class ProductAdmin(admin.ModelAdmin):
 
     def main_image_preview(self, obj):
         if obj.image:
-            return f'<img src="{obj.image.url}" width="50" />'
+            return format_html('<img src="{}" width="50" />', obj.image.url)
         return "-"
-    main_image_preview.allow_tags = True
     main_image_preview.short_description = "Главная фото"
 
 
 # --------------------
-# КОРЗИНА (без юзеров)
+# КОРЗИНА (через сессии, без юзеров)
 # --------------------
 @admin.register(CartItem)
 class CartItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'product', 'quantity', 'get_user_display')
 
     def get_user_display(self, obj):
-        # У тебя нет user в модели, используем session_key
+        # Используем session_key вместо user
         return obj.session_key if obj.session_key else "Аноним"
     get_user_display.short_description = "Пользователь"
 
