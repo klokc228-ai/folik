@@ -8,14 +8,29 @@ from .models import Product, ProductImage, Order, OrderItem, CartItem
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
+    readonly_fields = ('image_preview',)
+
+    def image_preview(self, obj):
+        if obj.image:
+            return f'<img src="{obj.image.url}" width="100" />'
+        return "-"
+    image_preview.allow_tags = True
+    image_preview.short_description = "Превью"
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'price', 'stock', 'is_available', 'is_featured', 'created_at')
+    list_display = ('title', 'price', 'stock', 'is_available', 'is_featured', 'created_at', 'main_image_preview')
     list_filter = ('is_available', 'is_featured', 'created_at')
     search_fields = ('title',)
     inlines = [ProductImageInline]
+
+    def main_image_preview(self, obj):
+        if obj.image:
+            return f'<img src="{obj.image.url}" width="50" />'
+        return "-"
+    main_image_preview.allow_tags = True
+    main_image_preview.short_description = "Главная фото"
 
 
 # --------------------
@@ -26,7 +41,8 @@ class CartItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'product', 'quantity', 'get_user_display')
 
     def get_user_display(self, obj):
-        return obj.user if obj.user else "Аноним"
+        # У тебя нет user в модели, используем session_key
+        return obj.session_key if obj.session_key else "Аноним"
     get_user_display.short_description = "Пользователь"
 
 
@@ -40,7 +56,6 @@ class OrderItemInline(admin.TabularInline):
 
     def total_price(self, obj):
         return obj.get_total_price()
-
     total_price.short_description = 'Сумма'
 
 
@@ -60,7 +75,6 @@ class OrderAdmin(admin.ModelAdmin):
 
     def order_total(self, obj):
         return sum(item.get_total_price() for item in obj.items.all())
-
     order_total.short_description = 'Итого'
 
 
