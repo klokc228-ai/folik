@@ -1,0 +1,42 @@
+# ── Python ──
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.egg-info/
+*.egg
+
+# ── Django stuff ──
+*.sqlite3
+db.sqlite3
+*.log
+*.pot
+*.py[cod]
+*.so
+*.DS_Store
+*.cover
+*.coverage
+coverage.xml
+htmlcov/
+.tox/
+.env
+.vscode/
+.idea/
+
+# ── Staticfiles ──
+staticfiles/
+# собираем через collectstatic, не коммитим
+
+# ── Media ──
+# Игнорим все медиа, кроме того, что нужно для деплоя
+# Например, логотипы, дефолтные картинки положим в media/core/
+media/*
+!media/core/
+# Можно добавить конкретные файлы
+# !media/logo.png
+# !media/default_product.jpg
+
+# ── Node / frontend ──
+node_modules/
+dist/
