@@ -1,10 +1,12 @@
 from django.db import models
 from django.conf import settings
+from cloudinary.models import CloudinaryField
+
 
 
 class Product(models.Model):
-    title = models.CharField(max_length=255, verbose_name="Название")
-    description = models.TextField(verbose_name="Описание")
+    title = models.CharField(max_length=255)
+    description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(
         max_digits=10,
@@ -12,14 +14,13 @@ class Product(models.Model):
         blank=True,
         null=True
     )
-    image = models.ImageField(upload_to="products/main/", verbose_name="Главное фото")
+
+    image = CloudinaryField('image')  # 🔥 ВАЖНО
+
     is_available = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)
-    stock = models.PositiveIntegerField(default=0, verbose_name="Количество на складе")
+    stock = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def get_final_price(self):
-        return self.discount_price if self.discount_price else self.price
 
     def __str__(self):
         return self.title
@@ -31,11 +32,10 @@ class ProductImage(models.Model):
         on_delete=models.CASCADE,
         related_name="images"
     )
-    image = models.ImageField(upload_to="products/gallery/")
+    image = CloudinaryField('image')  # 🔥 ВАЖНО
 
     def __str__(self):
         return f"Фото для {self.product.title}"
-
 
 # ── КОРЗИНА (через сессии, без логина) ──
 class CartItem(models.Model):

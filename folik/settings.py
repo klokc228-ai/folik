@@ -40,7 +40,7 @@ CLOUDINARY_STORAGE = {
     'RESOURCE_TYPE': 'image',
     'DEFAULT_TRANSFORMATION': [
         {'quality': 'auto'},
-        {'fetch_format': 'jpg'},  # 🔥 ВАЖНО
+        {'fetch_format': 'auto'},  # 🔥 ВАЖНО
     ],
 }
 # ── MIDDLEWARE ──
@@ -104,8 +104,7 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ── MEDIA FILES ──
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # ── DEFAULT AUTO FIELD ──
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
