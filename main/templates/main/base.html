@@ -596,6 +596,96 @@ footer {
 }
 
 
+
+/* Гнучкі картки товарів на мобільних */
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 14px;
+        padding: 15px 10px;
+    }
+
+    .product-card {
+        height: auto; /* гнучка висота */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-image-wrapper {
+        padding-top: 100%; /* квадрат 1:1 */
+    }
+
+    .product-info {
+        padding: 12px 10px;
+        gap: 6px;
+    }
+
+    .product-title {
+        font-size: 1rem;
+        -webkit-line-clamp: 2; /* максимум 2 рядки */
+        height: auto;
+    }
+
+    .product-price {
+        font-size: 1.2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .old-price {
+        font-size: 0.95rem;
+        margin-left: 0;
+    }
+}
+
+/* Дуже маленькі екрани (320-480px) */
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+    }
+
+    .product-card {
+        padding-bottom: 10px;
+    }
+
+    .product-title {
+        font-size: 0.95rem;
+    }
+
+    .product-price {
+        font-size: 1.1rem;
+    }
+
+    .old-price {
+        font-size: 0.85rem;
+    }
+}
+
+/* Забезпечуємо, що назва, ціна та кнопка "Переглянути товари" не зливаються */
+.product-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Кнопка перегляду товарів */
+.btn-primary {
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    padding: 12px;
+    margin-top: auto;
+    border-radius: 10px;
+}
+
+/* Додатковий відступ для мобільних */
+.container {
+    padding: 20px 10px;
+}
+
+
     </style>
 </head>
 <body>
@@ -613,7 +703,7 @@ footer {
 
     </nav>
 
-    
+        
 </header>
 
 
@@ -628,6 +718,8 @@ footer {
         <p class="copyright">© 2025 Folik — інтернет магазин техніки в Україні</p>
         <div class="footer-links">
             <a href="https://t.me/folikshop" target="_blank" class="telegram-link">✈️ Telegram</a>
+            <a href="https://www.instagram.com/folik.shop.ua/" target="_blank" class="telegram-link">📸 instagram</a>
+
             <a href="{% url 'about' %}">
 Про магазин</a>
         </div>

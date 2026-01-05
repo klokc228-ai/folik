@@ -3,6 +3,185 @@
 
 {% block content %}
 
+
+{% block extra_css %}
+<style>
+/* --- Грид товаров --- */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 10px;
+}
+
+/* --- Карточка продукта --- */
+.product-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: auto; /* гибкая высота */
+    border-radius: 12px;
+    background: var(--card, #1f1f1f);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+    border-color: rgba(70,211,105,0.3);
+}
+
+.product-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+.product-image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* квадрат 1:1 */
+    background: #0b0b0b;
+    overflow: hidden;
+}
+
+.product-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 10px;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+/* SALE бейдж */
+.sale-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: #e50914;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Инфо карточки */
+.product-footer {
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.product-title {
+    font-size: 1rem;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* максимум 2 ряда */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-price {
+    font-size: 1.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    color: #46d369;
+}
+
+.old-price {
+    text-decoration: line-through;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.product-more {
+    font-size: 0.9rem;
+    color: #46d369;
+    opacity: 0.8;
+    font-weight: 500;
+}
+
+/* --- Адаптация под планшеты --- */
+@media (max-width: 992px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 16px;
+    }
+}
+
+/* --- Адаптация под мобильные --- */
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+    }
+
+    .product-title {
+        font-size: 0.95rem;
+        -webkit-line-clamp: 2;
+    }
+
+    .product-price {
+        font-size: 1rem;
+    }
+
+    .old-price {
+        font-size: 0.85rem;
+    }
+
+    .product-more {
+        font-size: 0.85rem;
+    }
+
+    .product-image {
+        padding: 6px;
+    }
+}
+
+/* --- Очень маленькие экраны --- */
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 10px;
+    }
+
+    .product-title {
+        font-size: 0.85rem;
+    }
+
+    .product-price {
+        font-size: 0.95rem;
+    }
+
+    .old-price {
+        font-size: 0.8rem;
+    }
+
+    .product-more {
+        font-size: 0.8rem;
+    }
+
+    .product-image {
+        padding: 4px;
+    }
+}
+</style>
+{% endblock %}
+
+
 <div style="height: 40px;"></div>
 
 <h2 style="margin-bottom: 32px; text-align: center;">🛍 Всі товари</h2>
