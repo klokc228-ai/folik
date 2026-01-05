@@ -39,7 +39,6 @@ class CartItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'product', 'quantity', 'get_user_display')
 
     def get_user_display(self, obj):
-        # Используем session_key вместо user
         return obj.session_key if obj.session_key else "Аноним"
     get_user_display.short_description = "Пользователь"
 
@@ -53,7 +52,8 @@ class OrderItemInline(admin.TabularInline):
     readonly_fields = ('product', 'quantity', 'total_price')
 
     def total_price(self, obj):
-        return obj.get_total_price()
+        # Безопасно считаем сумму, если product удалён
+        return obj.get_total_price() if obj.product else 0
     total_price.short_description = 'Сумма'
 
 
@@ -72,7 +72,8 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
 
     def order_total(self, obj):
-        return sum(item.get_total_price() for item in obj.items.all())
+        # Суммируем только существующие продукты
+        return sum(item.get_total_price() for item in obj.items.all() if item.product)
     order_total.short_description = 'Итого'
 
 
@@ -81,5 +82,6 @@ class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'order', 'product', 'quantity', 'get_total_price')
 
     def get_total_price(self, obj):
-        return obj.get_total_price()
+        # Безопасно, если продукт удалён
+        return obj.get_total_price() if obj.product else 0
     get_total_price.short_description = 'Сумма'
