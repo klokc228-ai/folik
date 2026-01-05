@@ -171,13 +171,21 @@ def buy_now(request, product_id):
     # Получаем товар
     product = get_object_or_404(Product, id=product_id)
 
-    # Логика добавления в корзину
-    cart = request.session.get('cart', {})
-    if str(product_id) in cart:
-        cart[str(product_id)] += 1
-    else:
-        cart[str(product_id)] = 1
-    request.session['cart'] = cart
+    # Получаем session_key
+    session_key = request.session.session_key
+    if not session_key:
+        request.session.create()
 
-    # Редирект на checkout
+    # Добавляем товар в CartItem
+    item, created = CartItem.objects.get_or_create(
+        session_key=session_key,
+        product=product,
+        defaults={'quantity': 1}
+    )
+
+    if not created:
+        item.quantity += 1
+        item.save()
+
+    # Редирект сразу на checkout
     return redirect('checkout')
