@@ -10,7 +10,7 @@
     <img id="mainImage" src="{{ product.image.url }}" class="main-image">
     <button class="arrow right" onclick="nextImage()">&#10095;</button>
 
-    {% if product.stock > 0 and product.stock <= 5 %}
+    {% if product.stock > 0 and product.stock <= 10 %}
         <div class="low-stock-badge">
             ⚠️ Почти весь товар купили — осталось {{ product.stock }} шт.
         </div>
@@ -51,8 +51,14 @@
         <div class="actions">
             <form method="post" action="{% url 'add_to_cart' product.id %}">
                 {% csrf_token %}
-                <button class="btn primary">🛒 В корзину</button>
+                <button class="btn primary">🛒 До кошику</button>
             </form>
+
+
+    <form method="post" action="{% url 'buy_now' product.id %}">
+        {% csrf_token %}
+        <button class="btn secondary">💳 Купити зараз</button>
+    </form>
         </div>
 
     </div>
@@ -244,6 +250,79 @@ function nextImage() {
         padding: 4px 8px;
     }
 }
+
+/* Дуже маленькі екрани (320-480px) */
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+    }
+
+    .product-card {
+        padding-bottom: 10px;
+    }
+
+    .product-title {
+        font-size: 0.95rem;
+    }
+
+    .product-price {
+        font-size: 1.1rem;
+    }
+
+    .old-price {
+        font-size: 0.85rem;
+    }
+}
+
+
+
+/* Кнопки на странице продукта */
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+    text-align: center;
+    flex: 1;
+}
+
+.btn.primary {
+    background-color: #e50914;
+    color: #fff;
+}
+
+.btn.primary:hover {
+    background-color: #f40612;
+    transform: scale(1.03);
+}
+
+.btn.secondary {
+    background-color: #333;
+    color: #fff;
+}
+
+.btn.secondary:hover {
+    background-color: #444;
+    transform: scale(1.03);
+}
+
+@media (max-width: 768px) {
+    .actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
 </style>
 
 {% endblock %}

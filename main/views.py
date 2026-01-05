@@ -167,3 +167,17 @@ def about(request):
 
 def faq(request):
     return render(request, 'main/faq.html')
+def buy_now(request, product_id):
+    # Получаем товар
+    product = get_object_or_404(Product, id=product_id)
+
+    # Логика добавления в корзину
+    cart = request.session.get('cart', {})
+    if str(product_id) in cart:
+        cart[str(product_id)] += 1
+    else:
+        cart[str(product_id)] = 1
+    request.session['cart'] = cart
+
+    # Редирект на checkout
+    return redirect('checkout')

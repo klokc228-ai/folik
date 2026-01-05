@@ -359,8 +359,8 @@
 }
 
 .logo-img {
-    width: 140px;
-    height: 140px;
+    width: 100px;
+    height: 130px;
     object-fit: contain;
 }
 
@@ -692,18 +692,19 @@ footer {
 
 <header>
     <div class="logo">
+        <a href="{% url 'index' %}">
         <img src="https://res.cloudinary.com/divvrpmyn/image/upload/logo_citu7s.png" alt="Folik" class="logo-img">
     </div>  
 
     <nav>
         <a href="{% url 'index' %}">Головна</a>
         <a href="{% url 'products' %}">Товари</a>
-        <a href="{% url 'cart' %}">Кошик</a>
+        <a href="{% url 'cart' %}">🛒</a>
         
 
     </nav>
 
-        
+
 </header>
 
 
