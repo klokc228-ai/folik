@@ -1,8 +1,8 @@
 {% extends 'main/base.html' %}
-{% block title %}Всі товари | Folik{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Всі товари" %} | Folik{% endblock %}
 
 {% block content %}
-
 
 {% block extra_css %}
 <style>
@@ -184,7 +184,7 @@
 
 <div style="height: 40px;"></div>
 
-<h2 style="margin-bottom: 32px; text-align: center;">🛍 Всі товари</h2>
+<h2 style="margin-bottom: 32px; text-align: center;">🛍 {% trans "Всі товари" %}</h2>
 
 <div class="products-grid">
     {% for product in products %}
@@ -198,7 +198,7 @@
                     loading="lazy"
                 >
                 {% if product.discount_price %}
-                    <div class="sale-badge">SALE</div>
+                    <div class="sale-badge">{% trans "SALE" %}</div>
                 {% endif %}
             </div>
 
@@ -214,13 +214,13 @@
                     {% endif %}
                 </div>
 
-                <div class="product-more">Детальніше →</div>
+                <div class="product-more">{% trans "Детальніше →" %}</div>
             </div>
         </a>
     </div>
     {% empty %}
     <p style="grid-column: 1 / -1; text-align: center; color: #888; font-size: 1.2rem; padding: 60px 0;">
-        Наразі товарів немає
+        {% trans "Наразі товарів немає" %}
     </p>
     {% endfor %}
 </div>

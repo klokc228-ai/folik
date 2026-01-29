@@ -1,6 +1,9 @@
 {% extends 'main/base.html' %}
 {% block title %}{{ product.title }} | Folik{% endblock %}
 
+{% load i18n %}
+
+
 {% block content %}
 <div class="product-page">
 
@@ -12,7 +15,7 @@
 
     {% if product.stock > 0 and product.stock <= 10 %}
         <div class="low-stock-badge">
-            ⚠️ Почти весь товар купили — осталось {{ product.stock }} шт.
+            {% blocktrans with stock=product.stock %}⚠️ Почти весь товар купили — осталось {{ stock }} шт.{% endblocktrans %}
         </div>
     {% endif %}
 </div>
@@ -52,7 +55,7 @@
     <form method="post" action="{% url 'add_to_cart' product.id %}" style="display:inline-block;">
         {% csrf_token %}
         <button type="submit" class="btn primary">
-            🛒 До кошику
+            {% trans "🛒 До кошику" %}
         </button>
     </form>
 
@@ -60,7 +63,7 @@
     <form method="post" action="{% url 'buy_now' product.id %}" style="display:inline-block; margin-left: 10px;">
         {% csrf_token %}
         <button type="submit" class="btn secondary">
-            💳 Купити зараз
+            {% trans "💳 Купити зараз" %}
         </button>
     </form>
 </div>  

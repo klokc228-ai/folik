@@ -1,13 +1,15 @@
 {% extends 'main/base.html' %}
-{% block title %}Оформление заказа | Folik{% endblock %}
+{% load i18n %}  {# 🔥 подключаем теги перевода #}
+
+{% block title %}{% trans "Оформление заказа" %} | Folik{% endblock %}
 
 {% block content %}
 <div class="checkout-page">
-    <h1>📝 Оформление заказа</h1>
+    <h1>📝 {% trans "Оформление заказа" %}</h1>
 
     {% if success %}
         <div class="success-popup">
-            Спасибо за заказ! С вами скоро свяжется менеджер. ✅
+            {% trans "Спасибо за заказ! С вами скоро свяжется менеджер.  ✅" %} 
         </div>
     {% endif %}
 
@@ -20,9 +22,9 @@
                     <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
                     <div class="item-info">
                         <h2>{{ item.product.title }}</h2>
-                        <p>Цена: {{ item.get_total_price }} ₴</p>
+                        <p>{% trans "Цена" %}: {{ item.get_total_price }} ₴</p>
                         <label>
-                            Количество:
+                            {% trans "Количество" %}:
                             <input type="number" name="quantity_{{ item.id }}" value="{{ item.quantity }}" min="1">
                         </label>
                     </div>
@@ -31,26 +33,25 @@
             </div>
 
             <div class="customer-info">
-                <h2>Ваши данные</h2>
+                <h2>{% trans "Ваши данные" %}</h2>
 
                 <label>
-                    ФИО:
-                    <input type="text" name="full_name" required placeholder="Иванов Иван Иванович">
-                    
+                    {% trans "ФИО" %}:
+                    <input type="text" name="full_name" required placeholder="{% trans 'Иванов Иван Иванович' %}">
                 </label>
 
                 <label>
-                    Номер телефона:
+                    {% trans "Номер телефона" %}:
                     <input type="tel" name="phone" required placeholder="+380XXXXXXXXX">
-                    <small>После оформления заказа с вами свяжется наш менеджер</small>
+                    <small>{% trans "После оформления заказа с вами свяжется наш менеджер" %}</small>
                 </label>
             </div>
 
-            <button type="submit" class="btn primary">Отправить заказ</button>
+            <button type="submit" class="btn primary">{% trans "Отправить заказ" %}</button>
         </form>
     {% else %}
-        <p class="empty">Ваша корзина пуста 😔</p>
-        <a href="{% url 'products' %}" class="btn primary">Вернуться к покупкам</a>
+        <p class="empty">{% trans "Ваша корзина пуста 😔" %}</p>
+        <a href="{% url 'products' %}" class="btn primary">{% trans "Вернуться к покупкам" %}</a>
     {% endif %}
 </div>
 

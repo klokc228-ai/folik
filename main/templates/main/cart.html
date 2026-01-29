@@ -1,10 +1,11 @@
 {% extends 'main/base.html' %}
-{% block title %}Корзина | Folik{% endblock %}
+{% load i18n %}  {# 🔥 подключаем теги перевода #}
+
+{% block title %}{% trans "Кошик" %} | Folik{% endblock %}
 
 {% block content %}
 <div class="cart-page">
-    <h1>🛒 
-Ваш кошик</h1>
+    <h1>🛒 {% trans "Ваш кошик" %}</h1>
 
     {% if cart_items %}
         <div class="cart-items">
@@ -23,7 +24,7 @@
                     {% endif %}
 
                     <div class="quantity">
-                        <!-- Уменьшить -->
+                        <!-- Зменшити -->
                         <form method="post" action="{% url 'update_quantity' item.id 'decrease' %}" style="display:inline;">
                             {% csrf_token %}
                             <button type="submit" class="qty-btn">-</button>
@@ -31,7 +32,7 @@
 
                         <span id="qty-{{ item.id }}">{{ item.quantity }}</span>
 
-                        <!-- Увеличить -->
+                        <!-- Збільшити -->
                         <form method="post" action="{% url 'update_quantity' item.id 'increase' %}" style="display:inline;">
                             {% csrf_token %}
                             <button type="submit" class="qty-btn">+</button>
@@ -51,13 +52,13 @@
         </div>
 
         <div class="cart-summary">
-            <h2>
-Підсумок: <span id="cartTotal">{{ cart_total }} ₴</span></h2>
-            <a href="{% url 'checkout' %}" class="btn primary">Оформити замовлення</a>
+            <h2>{% trans "Підсумок" %}: <span id="cartTotal">{{ cart_total }} ₴</span></h2>
+            <a href="{% url 'checkout' %}" class="btn primary">{% trans "Оформити замовлення" %}</a>
         </div>
     {% else %}
-        <p class="empty">Ваша корзина пуста 😔</p>
-        <a href="{% url 'products' %}" class="btn primary">Вернуться к покупкам</a>
+        <p class="empty">{% trans "Ваш кошик порожній 😔" %}</p>
+
+        <a href="{% url 'products' %}" class="btn primary">{% trans "Повернутись до покупок" %}</a>
     {% endif %}
 </div>
 

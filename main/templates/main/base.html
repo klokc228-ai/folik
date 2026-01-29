@@ -1,20 +1,56 @@
-{% load static %}
+
+{% load i18n %}
 
 
 <!DOCTYPE html>
-<html lang="uk">
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Folik — інтернет магазин техніки{% endblock %}</title>
+<meta charset="UTF-8">
+<title>{% block title %}{% trans "Folik - інтернет магазин техніки" %}{% endblock %}</title>
 
-    <!-- SEO -->
-    <meta name="description" content="{% block meta_description %}Folik — купити техніку в Україні за кращими цінами{% endblock %}">
-    <meta name="keywords" content="техніка, інтернет магазин, купити техніку, Folik">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- SEO -->
+<meta name="description" content="{% block meta_description %}{% trans "Folik - купити техніку в Україні за кращими цінами" %}{% endblock %}">
+<meta name="keywords" content="{% trans "техніка, інтернет магазин, купити техніку, Folik" %}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Здесь вставляем весь твой <style> без изменений -->
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <a href="{% url 'index' %}">
+            <img src="https://res.cloudinary.com/divvrpmyn/image/upload/logo_citu7s.png" alt="Folik" class="logo-img">
+        </a>
+    </div>  
+
+    <nav>
+        <a href="{% url 'index' %}">{% trans "Головна" %}</a>
+        <a href="{% url 'products' %}">{% trans "Товари" %}</a>
+        <a href="{% url 'cart' %}">🛒</a>
+    </nav>
+
+    <!-- Селектор языка -->
+    <div class="language-switcher">
+        <form action="{% url 'set_language' %}" method="post" class="lang-form">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            {% get_current_language as LANGUAGE_CODE %}
+            <button type="submit" name="language" value="uk" class="lang-btn {% if LANGUAGE_CODE == 'uk' %}active{% endif %}" aria-label="Українська" title="Українська">
+                <span class="flag">🇺🇦</span>
+                <span class="lang-label">Українська</span>
+            </button>
+            <button type="submit" name="language" value="ru" class="lang-btn {% if LANGUAGE_CODE == 'ru' %}active{% endif %}" aria-label="Русский" title="Русский">
+                <span class="flag">🇷🇺</span>
+                <span class="lang-label">Русский</span>
+            </button>
+        </form>
+    </div>
+</header>
     <style>
         :root {
             --red: #e50914;
@@ -363,6 +399,46 @@
     height: 130px;
     object-fit: contain;
 }
+/* Language switcher styles */
+.language-switcher {
+    margin-left: auto;
+}
+.lang-form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.lang-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.02);
+    color: rgba(255,255,255,0.95);
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+    backdrop-filter: blur(6px);
+}
+.lang-btn .flag { font-size: 18px; line-height: 1; }
+.lang-btn .lang-label { font-size: 13px; }
+.lang-btn:not(.active):hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 18px 36px rgba(0,0,0,0.45);
+    background: rgba(255,255,255,0.04);
+}
+.lang-btn.active {
+    background: linear-gradient(90deg, #ffffff, #f2f2f2);
+    color: #0b0b0b;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+}
+.lang-btn:focus { outline: none; box-shadow: 0 0 0 4px rgba(229,9,20,0.06); }
+@media (max-width: 576px) {
+    .lang-btn { padding: 6px 10px; font-size: 13px; }
+}
 
 /* Сітка товарів */
 .products-grid {
@@ -687,25 +763,10 @@ footer {
 
 
     </style>
-</head>
-<body>
-
-<header>
-    <div class="logo">
-        <a href="{% url 'index' %}">
-        <img src="https://res.cloudinary.com/divvrpmyn/image/upload/logo_citu7s.png" alt="Folik" class="logo-img">
-    </div>  
-
-    <nav>
-        <a href="{% url 'index' %}">Головна</a>
-        <a href="{% url 'products' %}">Товари</a>
-        <a href="{% url 'cart' %}">🛒</a>
-        
-
-    </nav>
 
 
-</header>
+
+
 
 
 {% block hero %}{% endblock %}
