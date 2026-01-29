@@ -1,189 +1,236 @@
 {% extends 'main/base.html' %}
-{% block title %}Folik — інтернет-магазин техніки в Україні{% endblock %}
+
+{% block title %}
+Скупка та продаж компʼютерів в Одесі та Україні | Folik
+{% endblock %}
+
+{% block meta_description %}
+Скупка та продаж компʼютерів, ноутбуків та ПК. Продати компʼютер в Одесі або по Україні — швидка оцінка, чесна ціна, самовивіз або відправка. Telegram @dotersha2
+{% endblock %}
 
 {% block content %}
 
-
 {% block extra_css %}
 <style>
-/* --- Hero адаптація --- */
-.hero {
-    padding: 120px 40px 60px;
-    text-align: center;
+/* ================= HERO (НЕ МЕНЯЕМ) ================= */
+.hero-sell {
+    min-height: 70vh;
+    padding: 160px 60px 80px;
+    background:
+        linear-gradient(to top, rgba(20,20,20,0.95), rgba(20,20,20,0.3)),
+        url("https://images.unsplash.com/photo-1518770660439-4636190af475");
+    background-size: cover;
+    background-position: center;
 }
 
-.hero h1 {
-    font-size: 2rem;
-    line-height: 1.3;
+.hero-sell h1 {
+    font-size: 52px;
+    font-weight: 800;
+    max-width: 760px;
+    margin-bottom: 20px;
 }
 
-.hero p {
-    font-size: 1rem;
-    margin: 15px 0 20px;
+.hero-sell p {
+    font-size: 20px;
+    max-width: 640px;
+    opacity: 0.9;
+    margin-bottom: 35px;
 }
 
-.hero-btn {
-    display: inline-block;
-    padding: 12px 25px;
-    border-radius: 10px;
-    background: #e50914;
-    color: #fff;
-    font-weight: 700;
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-.hero-btn:hover {
-    background: #ff1414;
-}
-
-/* --- Продукти адаптація --- */
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 14px;
-    padding: 10px 0;
-}
-
-.product-card {
+.hero-actions {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: auto; /* гнучка висота */
-}
-
-.product-image-wrapper {
-    padding-top: 100%; /* квадрат 1:1 */
-}
-
-.product-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 10px;
-    transition: transform 0.3s ease;
-}
-
-.product-card:hover .product-image {
-    transform: scale(1.05);
-}
-
-.product-info {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.product-title {
-    font-size: 0.95rem;
-    line-height: 1.2;
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* максимум 2 рядки */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.product-price {
-    font-size: 1.1rem;
-    display: flex;
+    gap: 18px;
     flex-wrap: wrap;
-    gap: 5px;
-    color: #46d369;
 }
 
-.old-price {
-    text-decoration: line-through;
-    font-size: 0.9rem;
-    color: #888;
+.btn-sell {
+    background: var(--red);
+    padding: 16px 36px;
+    border-radius: 14px;
+    font-weight: 800;
 }
 
-/* Hero та картки для дуже маленьких екранів */
-@media (max-width: 480px) {
-    .hero {
-        padding: 80px 20px 40px;
+.btn-buy {
+    background: var(--green);
+    color: #000;
+    padding: 16px 36px;
+    border-radius: 14px;
+    font-weight: 800;
+}
+
+/* ================= FEATURES ================= */
+.features {
+    margin: 90px 0;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 30px;
+}
+
+.feature-card h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.feature-card p {
+    opacity: 0.85;
+    line-height: 1.6;
+}
+
+/* ================= CTA ================= */
+.contact-cta {
+    margin: 120px 0 90px;
+    padding: 55px;
+    border-radius: 26px;
+    background: linear-gradient(
+        135deg,
+        rgba(229,9,20,0.15),
+        rgba(229,9,20,0.05)
+    );
+    border: 1px solid rgba(229,9,20,0.35);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.contact-text h2 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.contact-text p {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+.contact-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.btn-call {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 16px 34px;
+    border-radius: 14px;
+    font-weight: 700;
+}
+
+/* ================= SEO ================= */
+.seo-text {
+    margin-top: 80px;
+    font-size: 15px;
+    line-height: 1.75;
+    opacity: 0.85;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+    .hero-sell {
+        padding: 120px 20px 60px;
     }
 
-    .hero h1 {
-        font-size: 1.6rem;
+    .hero-sell h1 {
+        font-size: 32px;
     }
 
-    .hero p {
-        font-size: 0.9rem;
+    .hero-sell p {
+        font-size: 16px;
     }
 
-    .hero-btn {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
-
-    .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 10px;
-    }
-
-    .product-title {
-        font-size: 0.9rem;
-    }
-
-    .product-price {
-        font-size: 1rem;
-    }
-
-    .old-price {
-        font-size: 0.8rem;
+    .contact-text h2 {
+        font-size: 26px;
     }
 }
 </style>
 {% endblock %}
 
+<!-- HERO (НЕ ТРОГАЕМ) -->
+<section class="hero-sell">
+    <h1>Скупка та продаж компʼютерів в Одесі та по всій Україні</h1>
+    <p>
+        Купуємо та продаємо ігрові ПК, офісні компʼютери, ноутбуки та комплектуючі.
+        Швидка оцінка, чесна ціна, готівка або переказ.
+    </p>
 
-<!-- Hero-секция -->
-<div class="hero">
-    <div class="hero-content">
-        <h1>Найкраща техніка для життя та роботи</h1>
-        <p>Смартфони, ноутбуки, аксесуари — лише перевірені товари</p>
-        <a href="{% url 'products' %}" class="hero-btn">Переглянути товари</a>
+    <div class="hero-actions">
+        <a href="https://t.me/dotersha2" class="btn-sell">Продати компʼютер</a>
+        <a href="{% url 'products' %}" class="btn-buy">Купити компʼютер</a>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<div class="container features">
+    <div class="features-grid">
+        <div class="feature-card">
+            <h3>💻 Купуємо будь-які компʼютери</h3>
+            <p>
+                Ігрові, офісні, старі або нові ПК та ноутбуки.
+                Просто надішліть фото — оцінка до 10 хвилин.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3>📍 Одеса та вся Україна</h3>
+            <p>
+                Самовивіз в Одесі або відправка по Україні
+                Новою Поштою чи іншим зручним способом.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3>💰 Чесна ціна</h3>
+            <p>
+                Орієнтуємось на реальний ринок і стан техніки.
+                Без заниження та «переобувань».
+            </p>
+        </div>
     </div>
 </div>
 
-<!-- Основний контент -->
+<!-- CTA -->
 <div class="container">
-    <section class="featured-products">
-        <h2>🔥 Найкращі товари</h2>
-
-        <div class="products-grid">
-            {% for product in featured_products %}
-            <div class="product-card">
-                <a href="{% url 'product_detail' product.id %}" class="product-link">
-                    <div class="product-image-wrapper">
-                        <img 
-                            src="{{ product.image.url }}" 
-                            alt="{{ product.title }}" 
-                            class="product-image"
-                            loading="lazy"
-                        >
-                    </div>
-
-                    <div class="product-info">
-                        <h3 class="product-title">{{ product.title }}</h3>
-
-                        <div class="product-price">
-                            {% if product.discount_price %}
-                                <span class="current-price">{{ product.discount_price|floatformat:0 }} ₴</span>
-                                <span class="old-price">{{ product.price|floatformat:0 }} ₴</span>
-                            {% else %}
-                                <span class="current-price">{{ product.price|floatformat:0 }} ₴</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                </a>
-            </div>
-            {% empty %}
-            <p class="no-products">Наразі немає рекомендованих товарів</p>
-            {% endfor %}
+    <div class="contact-cta">
+        <div class="contact-text">
+            <h2>Хочете продати компʼютер просто зараз?</h2>
+            <p>
+                Напишіть у Telegram або зателефонуйте —
+                відповідаємо швидко
+            </p>
         </div>
-    </section>
+
+        <div class="contact-actions">
+            <a href="https://t.me/dotersha2" class="btn-sell">
+                Написати в Telegram
+            </a>
+            <a href="tel:+380967898910" class="btn-call">
+                📞 Подзвонити
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- SEO -->
+<div class="container seo-text">
+    <p>
+        Folik — сервіс з продажу та скупки компʼютерів в Україні.
+        Ми купуємо та продаємо ігрові компʼютери, ноутбуки,
+        офісні ПК та комплектуючі. Якщо ви шукаєте,
+        де продати компʼютер в Одесі або по Україні —
+        ми запропонуємо швидку оцінку та чесні умови.
+    </p>
 </div>
 
 {% endblock %}
