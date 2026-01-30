@@ -4,7 +4,6 @@ Django settings for folik project (Ready for Render deployment, Cloudinary for m
 
 from pathlib import Path
 import os
-import dj_database_url
 
 # ── BASE DIR ──
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -78,12 +77,25 @@ TEMPLATES = [
 WSGI_APPLICATION = 'folik.wsgi.application'
 
 # ── DATABASE (SQLite) ──
-DATABASES = {
-    'default': dj_database_url.config(
-        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
-        conn_max_age=600,
-    )
-}
+try:
+    import dj_database_url
+except Exception:
+    dj_database_url = None
+
+if dj_database_url:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+            conn_max_age=600,
+        )
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # ── PASSWORD VALIDATION ──
 AUTH_PASSWORD_VALIDATORS = [
