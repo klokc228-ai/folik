@@ -59,13 +59,10 @@
         </button>
     </form>
 
-    <!-- Кнопка "Купити зараз" -->
-    <form method="post" action="{% url 'buy_now' product.id %}" style="display:inline-block; margin-left: 10px;">
-        {% csrf_token %}
-        <button type="submit" class="btn secondary">
-            {% trans "💳 Купити зараз" %}
-        </button>
-    </form>
+    <!-- Кнопка "Купити сейчас" - ведет на страницу покупки без выбора количества -->
+    <a href="{% url 'buy_now' product.id %}" class="btn secondary" style="display:inline-block; margin-left:10px;">
+        {% trans "💳 Купити зараз" %}
+    </a>
 </div>  
 
     </div>

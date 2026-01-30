@@ -165,24 +165,29 @@ def about(request):
 def faq(request):
     return render(request, 'main/faq.html')
 def buy_now(request, product_id):
-    # Получаем товар
     product = get_object_or_404(Product, id=product_id)
 
-    # Получаем session_key
-    session_key = request.session.session_key
-    if not session_key:
-        request.session.create()
+    # GET: показать минималистичную страницу покупки
+    if request.method == 'GET':
+        return render(request, 'main/buy_now.html', {'product': product})
 
-    # Добавляем товар в CartItem
-    item, created = CartItem.objects.get_or_create(
-        session_key=session_key,
-        product=product,
-        defaults={'quantity': 1}
-    )
+    # POST: создать заказ напрямую на один товар (количество = 1)
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        phone = request.POST.get('phone')
 
-    if not created:
-        item.quantity += 1
-        item.save()
+        if not full_name or not phone:
+            return render(request, 'main/buy_now.html', {
+                'product': product,
+                'error': 'Заполните все поля'
+            })
 
-    # Редирект сразу на checkout
-    return redirect('checkout')
+        order = Order.objects.create(full_name=full_name, phone=phone)
+        OrderItem.objects.create(order=order, product=product, quantity=1)
+
+        # Render same page with success message
+        return render(request, 'main/buy_now.html', {
+            'product': product,
+            'success': True,
+            'order': order
+        })

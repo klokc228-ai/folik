@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Купить компьютер" %} | Folik{% endblock %}
+
+{% block content %}
+<div class="buy-now-page" style="max-width:900px;margin:80px auto;padding:20px;">
+    <div style="display:flex;gap:30px;align-items:flex-start;flex-wrap:wrap;">
+        <div style="flex:1 1 320px;">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,0.06);" />
+            {% endif %}
+        </div>
+
+        <div style="flex:1 1 360px;">
+            <h1 style="margin:0 0 10px 0;font-size:26px;">{{ product.brand }} {{ product.model_name }}{% if not product.brand and not product.model_name %}{{ product.title }}{% endif %}</h1>
+            <p style="margin:6px 0 18px 0;color:#bbb;">{{ product.get_display_price }} ₴</p>
+
+            <ul style="list-style:none;padding:0;margin:0 0 18px 0;color:#ddd;line-height:1.7;">
+                {% if product.cpu %}<li><strong>{% trans "CPU" %}:</strong> {{ product.cpu }}</li>{% endif %}
+                {% if product.ram_gb %}<li><strong>{% trans "RAM" %}:</strong> {{ product.ram_gb }} GB</li>{% endif %}
+                {% if product.storage_gb %}<li><strong>{% trans "Storage" %}:</strong> {{ product.storage_gb }} GB {{ product.storage_type }}</li>{% endif %}
+                {% if product.gpu %}<li><strong>{% trans "GPU" %}:</strong> {{ product.gpu }}</li>{% endif %}
+                {% if product.condition %}<li><strong>{% trans "Состояние" %}:</strong> {{ product.condition }}</li>{% endif %}
+            </ul>
+
+            <p style="color:#aaa;margin-bottom:18px;">{{ product.description|default:"" }}</p>
+
+            {% if success %}
+                <div style="background:#46d369;color:#000;padding:12px;border-radius:8px;margin-bottom:12px;">{% trans "Спасибо! Заказ принят. Наш менеджер свяжется с вами." %}</div>
+            {% endif %}
+
+            <form method="post" action="{% url 'buy_now' product.id %}" style="display:flex;flex-direction:column;gap:10px;max-width:360px;">
+                {% csrf_token %}
+                <label style="display:flex;flex-direction:column;color:#ddd;font-weight:600;">
+                    {% trans "ФИО" %}
+                    <input type="text" name="full_name" required style="padding:10px;border-radius:8px;border:1px solid #333;background:#111;color:#fff;" placeholder="Иванов Иван"/>
+                </label>
+
+                <label style="display:flex;flex-direction:column;color:#ddd;font-weight:600;">
+                    {% trans "Телефон" %}
+                    <input type="tel" name="phone" required style="padding:10px;border-radius:8px;border:1px solid #333;background:#111;color:#fff;" placeholder="+380XXXXXXXXX"/>
+                </label>
+
+                <button type="submit" class="btn primary" style="width:220px;">{% trans "Купить сейчас" %}</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
