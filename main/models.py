@@ -28,7 +28,7 @@ class Product(models.Model):
     warranty_months = models.PositiveIntegerField(default=0)
 
     # Images / availability
-    image = CloudinaryField('image')
+    image = CloudinaryField('image', blank=True, null=True)
     is_available = models.BooleanField(default=True)
     stock = models.PositiveIntegerField(default=0)
 
@@ -56,7 +56,7 @@ class ProductImage(models.Model):
         on_delete=models.CASCADE,
         related_name="images"
     )
-    image = CloudinaryField('image')  # 🔥 ВАЖНО
+    image = CloudinaryField('image', blank=True, null=True)  # optional to allow admin create without Cloudinary configured
 
     def __str__(self):
         return f"Фото для {self.product.title}"

@@ -93,7 +93,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # ── INTERNATIONALIZATION ──
-LANGUAGE_CODE = 'uk'  # язык по умолчанию
+LANGUAGE_CODE = 'ru'  # язык по умолчанию (админка будет на русском)
 TIME_ZONE = 'Europe/Kiev'
 USE_I18N = True
 USE_L10N = True

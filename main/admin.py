@@ -2,6 +2,11 @@ from django.contrib import admin
 from django.utils.html import format_html
 from .models import Product, ProductImage, Order, OrderItem, CartItem
 
+# Русские заголовки админки
+admin.site.site_header = "Панель управления Folik"
+admin.site.site_title = "Folik — Админка"
+admin.site.index_title = "Управление сайтом"
+
 # --------------------
 # ПРОДУКТЫ
 # --------------------
