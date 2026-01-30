@@ -77,25 +77,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'folik.wsgi.application'
 
 # ── DATABASE (SQLite) ──
-try:
-    import dj_database_url
-except Exception:
-    dj_database_url = None
-
-if dj_database_url:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
-            conn_max_age=600,
-        )
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
 # ── PASSWORD VALIDATION ──
 AUTH_PASSWORD_VALIDATORS = [
@@ -106,7 +93,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # ── INTERNATIONALIZATION ──
-LANGUAGE_CODE = 'ru'  # язык по умолчанию (админка будет на русском)
+LANGUAGE_CODE = 'uk'  # язык по умолчанию
 TIME_ZONE = 'Europe/Kiev'
 USE_I18N = True
 USE_L10N = True
