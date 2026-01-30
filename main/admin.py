@@ -19,9 +19,11 @@ class ProductImageInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'price', 'stock', 'is_available', 'is_featured', 'created_at', 'main_image_preview')
-    list_filter = ('is_available', 'is_featured', 'created_at')
-    search_fields = ('title',)
+    list_display = ('title', 'brand', 'model_name', 'price', 'stock', 'is_available', 'is_featured', 'featured_score', 'created_at', 'main_image_preview')
+    list_filter = ('is_available', 'is_featured', 'brand', 'condition', 'created_at')
+    search_fields = ('title', 'brand', 'model_name', 'sku')
+    list_editable = ('is_available', 'is_featured', 'featured_score')
+    prepopulated_fields = { 'slug': ('title',) }
     inlines = [ProductImageInline]
 
     def main_image_preview(self, obj):

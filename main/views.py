@@ -11,10 +11,7 @@ from .models import (
 # ГЛАВНАЯ СТРАНИЦА
 # =====================
 def index(request):
-    featured_products = Product.objects.filter(
-        is_available=True,
-        is_featured=True
-    )
+    featured_products = Product.objects.filter(is_available=True).order_by('-featured_score','-is_featured','-created_at')[:6]
     return render(request, 'main/index.html', {
         'featured_products': featured_products
     })

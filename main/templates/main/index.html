@@ -171,6 +171,32 @@
     </div>
 </section>
 
+<!-- BEST PRODUCTS -->
+<div class="container">
+    <h2 style="margin-top: 40px; margin-bottom: 18px;">{% trans "Найкращі товари" %}</h2>
+    <div class="products-grid">
+        {% for product in featured_products %}
+            <div class="product-card">
+                <a href="{% url 'product_detail' product.id %}" class="product-link">
+                    <div class="product-image-wrapper">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}" class="product-image" />
+                        {% endif %}
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">{{ product.brand }} {{ product.model_name }}{% if not product.brand and not product.model_name %}{{ product.title }}{% endif %}</h3>
+                        <div class="product-price">{{ product.get_display_price }} UAH
+                            {% if product.discount_price %}<span class="old-price">{{ product.price }} UAH</span>{% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <p>{% trans "Поки немає рекомендованих товарів" %}</p>
+        {% endfor %}
+    </div>
+</div>
+
 <!-- FEATURES -->
 <div class="container features">
     <div class="features-grid">
